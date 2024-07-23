@@ -1,4 +1,5 @@
-use std::net::Ipv4Addr;
+use std::env;
+use dotenv::dotenv;
 
 use axum::{response::IntoResponse, routing::get, Json, Router};
 
@@ -15,11 +16,15 @@ async fn health_checker_handler() -> impl IntoResponse {
 
 #[tokio::main]
 async fn main() {
+    dotenv().ok();
     let app = Router::new()
     .route("/", get(health_checker_handler));
 
-    println!("🚀 Server started successfully on port 8000");
+    let host = env::var("HOST").unwrap();
+    let port: u16 = env::var("PORT").unwrap().parse().unwrap();
+    println!("🚀 Server started successfully on {}:{}", host, port);
 
-    let listener = tokio::net::TcpListener::bind((Ipv4Addr::LOCALHOST, 8000)).await.unwrap();
+    let listener = tokio::net::TcpListener::bind((host, port)).await.unwrap();
     axum::serve(listener, app).await.unwrap();
 }
+    
