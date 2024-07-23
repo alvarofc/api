@@ -1,3 +1,5 @@
+use std::net::Ipv4Addr;
+
 use axum::{response::IntoResponse, routing::get, Json, Router};
 
 async fn health_checker_handler() -> impl IntoResponse {
@@ -17,6 +19,7 @@ async fn main() {
     .route("/", get(health_checker_handler));
 
     println!("🚀 Server started successfully on port 8000");
-    let listener = tokio::net::TcpListener::bind(":8000").await.unwrap();
+
+    let listener = tokio::net::TcpListener::bind((Ipv4Addr::UNSPECIFIED, 8000)).await.unwrap();
     axum::serve(listener, app).await.unwrap();
 }
