@@ -13,9 +13,10 @@ async fn health_checker_handler() -> impl IntoResponse {
 
 #[tokio::main]
 async fn main() {
-    let app = Router::new().route("/", get(health_checker_handler));
+    let app = Router::new()
+    .route("/", get(health_checker_handler));
 
-    println!("🚀 Server started successfully in port 8000");
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:8000").await.unwrap();
+    println!("🚀 Server started successfully on port 8000");
+    let listener = tokio::net::TcpListener::bind(":8000").await.unwrap();
     axum::serve(listener, app).await.unwrap();
 }
