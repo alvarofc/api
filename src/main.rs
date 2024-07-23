@@ -20,6 +20,6 @@ async fn main() {
 
     println!("🚀 Server started successfully on port 8000");
 
-    let listener = tokio::net::TcpListener::bind((Ipv4Addr::UNSPECIFIED, 8000)).await.unwrap();
+    let listener = tokio::net::TcpListener::bind((Ipv4Addr::LOCALHOST, 8000)).await.unwrap();
     axum::serve(listener, app).await.unwrap();
 }
